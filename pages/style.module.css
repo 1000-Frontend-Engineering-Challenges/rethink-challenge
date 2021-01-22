@@ -83,15 +83,40 @@ body {
 
 /* Editor and Preview */
 .editorWindow {
-  flex: 1;
   border: 3px solid var(--color-border);
   border-radius: 4px;
   overflow: auto;
   min-height: 100vh;
+  flex: 1;
   display: flex;
   align-items: center;
-  padding: 40px 20px;
   justify-content: center;
+  padding: 40px 20px;
+}
+
+.editorWindow .wrapper {
+  max-width: 485px;
+  background-color: var(--color-white);
+  box-shadow: 0 2px 16px hsla(0, 0%, 0%, 0.16);
+  border-radius: 4px;
+}
+
+.editorWindow .titleBar {
+  width: 100%;
+  border-bottom: 1px solid var(--color-border);
+  padding: 0 20px;
+  background-color: var(--color-background);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.editorWindow .title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-dark-mute);
+  line-height: 40px;
+  margin: .5rem 0;
 }
 
 .editorWindow .empty {

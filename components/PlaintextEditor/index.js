@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 
 import css from './style.module.css';
 
-function PlaintextEditor({ file, write }) {
+const PlaintextEditor = ({ file, write }) => {
   console.log(file, write);
+  
   return (
     <div className={css.editor}>
       <h3>TODO</h3>

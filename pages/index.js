@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import path from 'path';
 import Head from 'next/head';
 
 import css from './style.module.css';
@@ -11,8 +12,8 @@ import PlaintextEditor from '../components/PlaintextEditor';
 
 // Uncomment keys to register editors for media types
 const REGISTERED_EDITORS = {
-  // "text/plain": PlaintextEditor,
-  // "text/markdown": MarkdownEditor,
+  "text/plain": PlaintextEditor,
+  "text/markdown": MarkdownEditor,
 };
 
 const PlaintextFilesChallenge = () => {
@@ -69,10 +70,15 @@ const PlaintextFilesChallenge = () => {
 
       <main className={css.editorWindow}>
         {activeFile && (
-          <>
+          <div className={css.wrapper}>
+            <header className={css.titleBar}>
+              <h2 className={css.title}>
+                {path.basename(activeFile.name)}
+              </h2>
+            </header>
             {Editor && <Editor file={activeFile} write={write} />}
             {!Editor && <Previewer file={activeFile} />}
-          </>
+          </div>
         )}
 
         {!activeFile && (
