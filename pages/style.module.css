@@ -94,7 +94,15 @@ body {
   padding: 40px 20px;
 }
 
+.editorWindow .empty {
+  text-align: center;
+  font-size: 16px;
+  line-height: 16px;
+  color: var(--color-text-dark-mute);
+}
+
 .editorWindow .wrapper {
+  width: 100%;
   max-width: 485px;
   background-color: var(--color-white);
   box-shadow: 0 2px 16px hsla(0, 0%, 0%, 0.16);
@@ -117,11 +125,4 @@ body {
   color: var(--color-text-dark-mute);
   line-height: 40px;
   margin: .5rem 0;
-}
-
-.editorWindow .empty {
-  text-align: center;
-  font-size: 16px;
-  line-height: 16px;
-  color: var(--color-text-dark-mute);
 }

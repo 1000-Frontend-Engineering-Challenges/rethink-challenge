@@ -1,28 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import path from 'path';
 import Prism from "prismjs";
 import PropTypes from 'prop-types';
 
-import "./prism.css";
 import css from './style.module.css';
+import 'prismjs/components/prism-json';
 
 
 const Previewer = ({ file }) => {
+  const { text, language } = file;
   const [value, setValue] = useState('');
 
   useEffect(() => {
-    (async () => {
-      setValue(await file.text());
-      Prism.highlightAll();
-    })();
+    setValue(text);
+    setTimeout(() => Prism.highlightAll(), 0)
   }, [file]);
+
 
   return (
     <div className={css.preview}>
       <pre className={css.content}>
-        <code className="language-css">
-          {value}
-        </code>
+        <code className={`language-${language}`}>{value}</code>
       </pre>
     </div>
   );

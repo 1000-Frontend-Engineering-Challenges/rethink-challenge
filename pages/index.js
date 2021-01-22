@@ -6,23 +6,38 @@ import css from './style.module.css';
 import { listFiles } from '../utils/files';
 import Previewer from '../components/Previewer';
 import FilesTable from '../components/FilesTable';
+import useLocalStorage from '../utils/uselocalstorage';
 import MarkdownEditor from '../components/MarkdownEditor';
 import PlaintextEditor from '../components/PlaintextEditor';
 
 
-// Uncomment keys to register editors for media types
 const REGISTERED_EDITORS = {
   "text/plain": PlaintextEditor,
   "text/markdown": MarkdownEditor,
 };
 
 const PlaintextFilesChallenge = () => {
-  const [files, setFiles] = useState([]);
-  const [activeFile, setActiveFile] = useState(null);
+  const [files, setFiles] = useLocalStorage("files", []);
+  const [activeFile, setActiveFile] = useLocalStorage("activeFile", null);
 
   useEffect(() => {
-    const files = listFiles();
-    setFiles(files);
+    if(files.length === 0) {
+      (async () => {
+        const raw_files = listFiles();
+  
+        const filesMapped = await Promise.all(
+          raw_files.map(async file => ({
+            name: file.name,
+            type: file.type,
+            text: await file.text(),
+            lastModified: file.lastModified,
+            language: file.type.slice(file.type.indexOf("/") + 1)
+          }))
+        )
+  
+        setFiles(filesMapped);
+      })();
+    }
   }, []);
 
   const write = file => {
@@ -36,6 +51,7 @@ const PlaintextFilesChallenge = () => {
   return (
     <div className={css.page}>
       <Head>
+        <link rel="stylesheet" href="/prism.css" />
         <title>Rethink Engineering Challenge</title>
       </Head>
 
@@ -82,7 +98,7 @@ const PlaintextFilesChallenge = () => {
         )}
 
         {!activeFile && (
-          <div className={css.empty}>Select a file to view or edit</div>
+          <p className={css.empty}>Select a file to view or edit</p>
         )}
       </main>
     </div>
