@@ -13,6 +13,7 @@
 
 * {
   box-sizing: border-box;
+  margin-top: 0;
 }
 
 html,
@@ -125,4 +126,10 @@ body {
   color: var(--color-text-dark-mute);
   line-height: 40px;
   margin: .5rem 0;
+}
+
+.editorWindow .status {
+  font-size: .7rem;
+  font-weight: 500;
+  font-style: italic;
 }

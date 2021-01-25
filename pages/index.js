@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import path from 'path';
 import Head from 'next/head';
 
@@ -17,6 +17,7 @@ const REGISTERED_EDITORS = {
 };
 
 const PlaintextFilesChallenge = () => {
+  const [message, setMessage] = useState(null);
   const [files, setFiles] = useLocalStorage("files", []);
   const [activeFile, setActiveFile] = useLocalStorage("activeFile", null);
 
@@ -40,11 +41,36 @@ const PlaintextFilesChallenge = () => {
     }
   }, []);
 
-  const write = file => {
-    console.log('Writing soon... ', file.name);
+  const debounce = (callback, wait) => {
+    let timerId;
 
-    // TODO: Write the file to the `files` array
-  };
+    return (...args) => {
+      clearTimeout(timerId);
+      
+      timerId = setTimeout(() => {
+        callback(...args);
+      }, wait);
+    };
+  }
+
+  const write = file => {
+    setFiles(prevState => prevState.map(item => {
+      if(file.name === item.name) {
+        return file;
+      }
+
+      return item;
+    }));
+  }
+
+  const debounceSave = useCallback(
+		debounce(file => {
+      write(file);
+      setMessage('saved');
+      setTimeout(() => setMessage(null), 500)
+    }, 1000),
+		[files],
+	);
 
   const Editor = activeFile ? REGISTERED_EDITORS[activeFile.type] : null;
 
@@ -91,8 +117,10 @@ const PlaintextFilesChallenge = () => {
               <h2 className={css.title}>
                 {path.basename(activeFile.name)}
               </h2>
+
+              {Editor && message && <p className={css.status}>{message}</p>}
             </header>
-            {Editor && <Editor file={activeFile} write={write} />}
+            {Editor && <Editor file={activeFile} message={message} setMessage={setMessage} debounceSave={debounceSave} />}
             {!Editor && <Previewer file={activeFile} />}
           </div>
         )}
