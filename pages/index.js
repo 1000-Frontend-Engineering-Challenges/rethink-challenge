@@ -6,7 +6,7 @@ import css from './style.module.css';
 import { listFiles } from '../utils/files';
 import Previewer from '../components/Previewer';
 import FilesTable from '../components/FilesTable';
-import useLocalStorage from '../utils/uselocalstorage';
+import useLocalStorage from '../utils/useLocalStorage';
 import MarkdownEditor from '../components/MarkdownEditor';
 import PlaintextEditor from '../components/PlaintextEditor';
 
